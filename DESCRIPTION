@@ -10,5 +10,6 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    rcmdcheck (>=1.4.0)
 Config/testthat/edition: 3
