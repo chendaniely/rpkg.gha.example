@@ -23,10 +23,24 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v1
+      - name: install ubuntu system dependencies
+        shell: bash
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
+
+      - name: Cache packages
+        uses: actions/cache@v1
         with:
-          extra-packages: pkgdown
-          needs: website
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
+        shell: Rscript {0}
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore()
 
       - name: Deploy package
         run: |
