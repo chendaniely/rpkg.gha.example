@@ -11,5 +11,8 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     testthat (>= 3.0.0),
-    rcmdcheck (>= 1.4.0)
+    rcmdcheck (>= 1.4.0),
+    pkgdown,
+    usethis
 Config/testthat/edition: 3
+URL: https://chendaniely.github.io/rpkg.gha.example/
