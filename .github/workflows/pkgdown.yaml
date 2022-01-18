@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RENV_PATHS_ROOT: ~/.local/share/renv
+      #RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
       - uses: actions/checkout@v2
 
@@ -24,24 +24,29 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: install ubuntu system dependencies
-        shell: bash
-        run: |
-          sudo apt-get install libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
-
-      - name: Cache packages
-        uses: actions/cache@v1
+      - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
+          extra-packages: pkgdown
+          needs: website
 
-      - name: Restore packages
-        shell: Rscript {0}
-        run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore()
+#       - name: install ubuntu system dependencies
+#         shell: bash
+#         run: |
+#           sudo apt-get install libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
+#
+#       - name: Cache packages
+#         uses: actions/cache@v1
+#         with:
+#           path: ${{ env.RENV_PATHS_ROOT }}
+#           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-renv-
+#
+#       - name: Restore packages
+#         shell: Rscript {0}
+#         run: |
+#           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+#           renv::restore()
 
       - name: Deploy package
         run: |
