@@ -51,6 +51,9 @@ jobs:
 #           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
 #           renv::restore()
 
+      - name: Install package
+        run: R CMD INSTALL .
+
       - name: Deploy package
         run: |
           git config --local user.name "$GITHUB_ACTOR"
